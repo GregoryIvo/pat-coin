@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  patriotcoind The patriotcoin core server.
+#
+#
+# chkconfig: 345 80 20
+# description: patriotcoind
+# processname: patriotcoind
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/patriotcoind, see below
+if [ -f /etc/sysconfig/patriotcoind ]; then
+        . /etc/sysconfig/patriotcoind
+fi
+
+RETVAL=0
+
+prog=patriotcoind
+# you can override the lockfile via PATRIOTCOIND_LOCKFILE in /etc/sysconfig/patriotcoind
+lockfile=${PATRIOTCOIND_LOCKFILE-/var/lock/subsys/patriotcoind}
+
+# patriotcoind defaults to /usr/bin/patriotcoind, override with PATRIOTCOIND_BIN
+patriotcoind=${PATRIOTCOIND_BIN-/usr/bin/patriotcoind}
+
+# patriotcoind opts default to -disablewallet, override with PATRIOTCOIND_OPTS
+patriotcoind_opts=${PATRIOTCOIND_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $patriotcoind $patriotcoind_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

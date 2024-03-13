@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Patriotcoin Core
+Comment=Connect to the Patriotcoin P2P Network
+Comment[de]=Verbinde mit dem Patriotcoin peer-to-peer Netzwerk
+Comment[fr]=Patriotcoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Patriotcoin, eşten eşe kriptografik sanal para birimi
+Exec=patriotcoin-qt %u
+Terminal=false
+Type=Application
+Icon=patriotcoin128
+MimeType=x-scheme-handler/patriotcoin;
+Categories=Office;Finance;

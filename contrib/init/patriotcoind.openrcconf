@@ -1,0 +1,33 @@
+# /etc/conf.d/patriotcoind: config file for /etc/init.d/patriotcoind
+
+# Config file location
+#PATRIOTCOIND_CONFIGFILE="/etc/patriotcoin/patriotcoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $PATRIOTCOIND_USER)
+#PATRIOTCOIND_PIDDIR="/var/run/patriotcoind"
+
+# What filename to give the pidfile
+#PATRIOTCOIND_PIDFILE="${PATRIOTCOIND_PIDDIR}/patriotcoind.pid"
+
+# Where to write patriotcoind data (be mindful that the blockchain is large)
+#PATRIOTCOIND_DATADIR="/var/lib/patriotcoind"
+
+# User and group to own patriotcoind process
+#PATRIOTCOIND_USER="patriotcoin"
+#PATRIOTCOIND_GROUP="patriotcoin"
+
+# Path to patriotcoind executable
+#PATRIOTCOIND_BIN="/usr/bin/patriotcoind"
+
+# Nice value to run patriotcoind under
+#PATRIOTCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+PATRIOTCOIND_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for patriotcoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+PATRIOTCOIND_SIGTERM_TIMEOUT=60

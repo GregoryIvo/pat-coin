@@ -24,23 +24,23 @@ BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAG
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
 BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBDOGECOIN_SERVER=libdogecoin_server.a
-LIBDOGECOIN_COMMON=libdogecoin_common.a
-LIBDOGECOIN_CONSENSUS=libdogecoin_consensus.a
-LIBDOGECOIN_CLI=libdogecoin_cli.a
-LIBDOGECOIN_UTIL=libdogecoin_util.a
-LIBDOGECOIN_CRYPTO=crypto/libdogecoin_crypto.a
-LIBDOGECOINQT=qt/libdogecoinqt.a
+LIBPATRIOTCOIN_SERVER=libpatriotcoin_server.a
+LIBPATRIOTCOIN_COMMON=libpatriotcoin_common.a
+LIBPATRIOTCOIN_CONSENSUS=libpatriotcoin_consensus.a
+LIBPATRIOTCOIN_CLI=libpatriotcoin_cli.a
+LIBPATRIOTCOIN_UTIL=libpatriotcoin_util.a
+LIBPATRIOTCOIN_CRYPTO=crypto/libpatriotcoin_crypto.a
+LIBPATRIOTCOINQT=qt/libpatriotcoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBDOGECOIN_ZMQ=libdogecoin_zmq.a
+LIBPATRIOTCOIN_ZMQ=libpatriotcoin_zmq.a
 endif
 if BUILD_BITCOIN_LIBS
-LIBDOGECOINCONSENSUS=libdogecoinconsensus.la
+LIBPATRIOTCOINCONSENSUS=libpatriotcoinconsensus.la
 endif
 if ENABLE_WALLET
-LIBDOGECOIN_WALLET=libdogecoin_wallet.a
+LIBPATRIOTCOIN_WALLET=libpatriotcoin_wallet.a
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -49,16 +49,16 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBDOGECOIN_CRYPTO) \
-  $(LIBDOGECOIN_UTIL) \
-  $(LIBDOGECOIN_COMMON) \
-  $(LIBDOGECOIN_CONSENSUS) \
-  $(LIBDOGECOIN_SERVER) \
-  $(LIBDOGECOIN_CLI) \
-  $(LIBDOGECOIN_WALLET) \
-  $(LIBDOGECOIN_ZMQ)
+  $(LIBPATRIOTCOIN_CRYPTO) \
+  $(LIBPATRIOTCOIN_UTIL) \
+  $(LIBPATRIOTCOIN_COMMON) \
+  $(LIBPATRIOTCOIN_CONSENSUS) \
+  $(LIBPATRIOTCOIN_SERVER) \
+  $(LIBPATRIOTCOIN_CLI) \
+  $(LIBPATRIOTCOIN_WALLET) \
+  $(LIBPATRIOTCOIN_ZMQ)
 
-lib_LTLIBRARIES = $(LIBDOGECOINCONSENSUS)
+lib_LTLIBRARIES = $(LIBPATRIOTCOINCONSENSUS)
 
 bin_PROGRAMS =
 noinst_PROGRAMS =
@@ -66,11 +66,11 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += dogecoind
+  bin_PROGRAMS += patriotcoind
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += dogecoin-cli dogecoin-tx
+  bin_PROGRAMS += patriotcoin-cli patriotcoin-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -100,10 +100,10 @@ BITCOIN_CORE_H = \
   core_io.h \
   core_memusage.h \
   cuckoocache.h \
-  dogecoin.cpp \
-  dogecoin.h \
-  dogecoin-fees.cpp \
-  dogecoin-fees.h \
+  patriotcoin.cpp \
+  patriotcoin.h \
+  patriotcoin-fees.cpp \
+  patriotcoin-fees.h \
   httprpc.h \
   httpserver.h \
   indirectmap.h \
@@ -181,12 +181,12 @@ obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh $(abs_top_builddir)/src/obj/build.h \
 	  $(abs_top_srcdir)
-libdogecoin_util_a-clientversion.$(OBJEXT): obj/build.h
+libpatriotcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
 # server: shared between bitcoind and bitcoin-qt
-libdogecoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libdogecoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_server_a_SOURCES = \
+libpatriotcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libpatriotcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_server_a_SOURCES = \
   addrman.cpp \
   addrdb.cpp \
   bloom.cpp \
@@ -225,9 +225,9 @@ libdogecoin_server_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 if ENABLE_ZMQ
-libdogecoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
-libdogecoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_zmq_a_SOURCES = \
+libpatriotcoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
+libpatriotcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp
@@ -236,9 +236,9 @@ endif
 
 # wallet: shared between bitcoind and bitcoin-qt, but only linked
 # when wallet enabled
-libdogecoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libdogecoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_wallet_a_SOURCES = \
+libpatriotcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libpatriotcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_wallet_a_SOURCES = \
   wallet/crypter.cpp \
   wallet/db.cpp \
   wallet/rpcdump.cpp \
@@ -250,9 +250,9 @@ libdogecoin_wallet_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
-crypto_libdogecoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES)
-crypto_libdogecoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libdogecoin_crypto_a_SOURCES = \
+crypto_libpatriotcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES)
+crypto_libpatriotcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libpatriotcoin_crypto_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/common.h \
@@ -273,13 +273,13 @@ crypto_libdogecoin_crypto_a_SOURCES = \
 
 # only include SSE2 scrypt sources if USE_SCRYPT_SSE2 is defined
 if USE_SCRYPT_SSE2
-crypto_libdogecoin_crypto_a_SOURCES += crypto/scrypt-sse2.cpp
+crypto_libpatriotcoin_crypto_a_SOURCES += crypto/scrypt-sse2.cpp
 endif
 
 # consensus: shared between all executables that validate any consensus rules.
-libdogecoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libdogecoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_consensus_a_SOURCES = \
+libpatriotcoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libpatriotcoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_consensus_a_SOURCES = \
   amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
@@ -314,9 +314,9 @@ libdogecoin_consensus_a_SOURCES = \
   version.h
 
 # common: shared between bitcoind, and bitcoin-qt and non-server tools
-libdogecoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libdogecoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_common_a_SOURCES = \
+libpatriotcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libpatriotcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_common_a_SOURCES = \
   amount.cpp \
   arith_uint256.cpp \
   auxpow.cpp \
@@ -343,9 +343,9 @@ libdogecoin_common_a_SOURCES = \
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libdogecoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libdogecoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_util_a_SOURCES = \
+libpatriotcoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libpatriotcoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_util_a_SOURCES = \
   support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
@@ -365,99 +365,99 @@ libdogecoin_util_a_SOURCES = \
 
 if GLIBC_BACK_COMPAT
 
-libdogecoin_util_a_SOURCES += compat/glibc_compat.cpp
+libpatriotcoin_util_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 
 endif
 
 # cli: shared between bitcoin-cli and bitcoin-qt
-libdogecoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libdogecoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libdogecoin_cli_a_SOURCES = \
+libpatriotcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libpatriotcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoin_cli_a_SOURCES = \
   rpc/client.cpp \
   $(BITCOIN_CORE_H)
 
-nodist_libdogecoin_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libpatriotcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind binary #
-dogecoind_SOURCES = bitcoind.cpp
-dogecoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-dogecoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dogecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+patriotcoind_SOURCES = bitcoind.cpp
+patriotcoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+patriotcoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+patriotcoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dogecoind_SOURCES += bitcoind-res.rc
+patriotcoind_SOURCES += bitcoind-res.rc
 endif
 
-dogecoind_LDADD = \
-  $(LIBDOGECOIN_SERVER) \
-  $(LIBDOGECOIN_COMMON) \
+patriotcoind_LDADD = \
+  $(LIBPATRIOTCOIN_SERVER) \
+  $(LIBPATRIOTCOIN_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBDOGECOIN_UTIL) \
-  $(LIBDOGECOIN_WALLET) \
-  $(LIBDOGECOIN_ZMQ) \
-  $(LIBDOGECOIN_CONSENSUS) \
-  $(LIBDOGECOIN_CRYPTO) \
+  $(LIBPATRIOTCOIN_UTIL) \
+  $(LIBPATRIOTCOIN_WALLET) \
+  $(LIBPATRIOTCOIN_ZMQ) \
+  $(LIBPATRIOTCOIN_CONSENSUS) \
+  $(LIBPATRIOTCOIN_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-dogecoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+patriotcoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
 # bitcoin-cli binary #
-dogecoin_cli_SOURCES = bitcoin-cli.cpp
-dogecoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-dogecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dogecoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+patriotcoin_cli_SOURCES = bitcoin-cli.cpp
+patriotcoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+patriotcoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+patriotcoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dogecoin_cli_SOURCES += bitcoin-cli-res.rc
+patriotcoin_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
-dogecoin_cli_LDADD = \
-  $(LIBDOGECOIN_CLI) \
+patriotcoin_cli_LDADD = \
+  $(LIBPATRIOTCOIN_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBDOGECOIN_UTIL) \
-  $(LIBDOGECOIN_CRYPTO)
+  $(LIBPATRIOTCOIN_UTIL) \
+  $(LIBPATRIOTCOIN_CRYPTO)
 
-dogecoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+patriotcoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
 # bitcoin-tx binary #
-dogecoin_tx_SOURCES = bitcoin-tx.cpp
-dogecoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-dogecoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dogecoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+patriotcoin_tx_SOURCES = bitcoin-tx.cpp
+patriotcoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+patriotcoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+patriotcoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dogecoin_tx_SOURCES += bitcoin-tx-res.rc
+patriotcoin_tx_SOURCES += bitcoin-tx-res.rc
 endif
 
-dogecoin_tx_LDADD = \
+patriotcoin_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBDOGECOIN_COMMON) \
-  $(LIBDOGECOIN_UTIL) \
-  $(LIBDOGECOIN_CONSENSUS) \
-  $(LIBDOGECOIN_CRYPTO) \
+  $(LIBPATRIOTCOIN_COMMON) \
+  $(LIBPATRIOTCOIN_UTIL) \
+  $(LIBPATRIOTCOIN_CONSENSUS) \
+  $(LIBPATRIOTCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-dogecoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+patriotcoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # bitcoinconsensus library #
 if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h
-libdogecoinconsensus_la_SOURCES = $(crypto_libdogecoin_crypto_a_SOURCES) $(libdogecoin_consensus_a_SOURCES)
+libpatriotcoinconsensus_la_SOURCES = $(crypto_libpatriotcoin_crypto_a_SOURCES) $(libpatriotcoin_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
-  libdogecoinconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libpatriotcoinconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libdogecoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libdogecoinconsensus_la_LIBADD = $(LIBSECP256K1)
-libdogecoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
-libdogecoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libpatriotcoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libpatriotcoinconsensus_la_LIBADD = $(LIBSECP256K1)
+libpatriotcoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
+libpatriotcoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #

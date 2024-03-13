@@ -1,0 +1,6 @@
+usr/local/bin/patriotcoin-qt usr/bin
+share/pixmaps/patriotcoin32.xpm usr/share/pixmaps
+share/pixmaps/patriotcoin16.xpm usr/share/pixmaps
+share/pixmaps/patriotcoin128.png usr/share/pixmaps
+debian/patriotcoin-qt.desktop usr/share/applications
+debian/patriotcoin-qt.protocol usr/share/kde4/services/
